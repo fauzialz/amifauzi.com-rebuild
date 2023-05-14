@@ -16,9 +16,40 @@ import Message from "~/components/Message";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import DigitalEnvelope from "~/components/DigitalEnvelope";
 import MusicPlayer from "~/components/MusicPlayer";
+import ogimage from "~/images/ogimage.jpg";
 
 export const meta: V2_MetaFunction = () => {
-  return [{ title: "New Remix App" }];
+  return [
+    {
+      title: "Undangan Pernikahan - Ami & Fauzi",
+    },
+    {
+      description:
+        "Sabtu, 30 Juli 2022 di Taman Mini Perumnas Batu Galing, Bengkulu",
+    },
+    {
+      "og:image": ogimage,
+    },
+    {
+      "og:image:type": "image/jpeg",
+    },
+    {
+      "og:site_name": "amifauzi",
+    },
+    { "og:url": "https://www.amifauzi.com/" },
+    { "og:title": "Undangan Pernikahan - Ami & Fauzi" },
+    {
+      "og:description": `Sabtu, 30 Juli 2022 di Taman Mini Perumnas Batu Galing, Bengkulu`,
+    },
+    { "og:type": "website" },
+
+    { "twitter:image": ogimage },
+    { "twitter:card": "summary_large_image" },
+    {
+      "twitter:description":
+        "Sabtu, 30 Juli 2022 di Taman Mini Perumnas Batu Galing, Bengkulu",
+    },
+  ];
 };
 
 export const loader = indexLoader;
