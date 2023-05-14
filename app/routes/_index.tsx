@@ -17,6 +17,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import DigitalEnvelope from "~/components/DigitalEnvelope";
 import MusicPlayer from "~/components/MusicPlayer";
 import ogimage from "~/images/ogimage.jpg";
+import GalleryPhotos from "~/components/GalleryPhotos";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -120,6 +121,10 @@ export default function Index() {
       <div className="mb-24">
         <LocationMap />
       </div>
+
+      <SectionWrapper className="mb-36">
+        <GalleryPhotos />
+      </SectionWrapper>
 
       <GoogleOAuthProvider clientId={ENV.GOOGLE_CLIENT_ID!}>
         <SectionWrapper className="mb-36">
