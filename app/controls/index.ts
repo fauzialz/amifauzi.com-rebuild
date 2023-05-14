@@ -1,8 +1,12 @@
 import { json } from "@remix-run/node";
 import { getClinetEnv } from "~/env.server";
-import { getMessage, getPersonRemarks } from "~/utils/googleSheetsApi";
+import {
+  appendMessage,
+  getMessage,
+  getPersonRemarks,
+} from "~/utils/googleSheetsApi";
 import type { MessageItemType } from "~/utils/googleSheetsApi";
-import type { LoaderFunction } from "@remix-run/node";
+import type { LoaderFunction, ActionFunction } from "@remix-run/node";
 
 export interface LoaderDataType {
   remark: string;
@@ -24,4 +28,22 @@ export const indexLoader: LoaderFunction = async ({ request }) => {
     messages,
     ENV: getClinetEnv(),
   });
+};
+
+export const indexAction: ActionFunction = async ({ request }) => {
+  const formData = await request.formData();
+  const name = formData.get("name");
+  const message = formData.get("message");
+  const googleName = formData.get("google_name");
+
+  if (
+    typeof name !== "string" ||
+    typeof message !== "string" ||
+    typeof googleName !== "string"
+  ) {
+    return { ok: false };
+  }
+
+  const success = await appendMessage(name, message, googleName);
+  return { ok: success };
 };
