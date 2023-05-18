@@ -1,22 +1,35 @@
 import { BinaryHeap } from "./binary-heap";
 
-const buildPrecedentsMap = (graph, startNode, endNode) => {
+type TNode = { [key: number]: number };
+type TGraphFunc = (id: number) => TNode;
+
+interface IBinaryHeapNode {
+  id: number;
+  weight: number;
+}
+
+const buildPrecedentsMap = (
+  graph: TGraphFunc,
+  startNode: number,
+  endNode: number
+) => {
   // store the previous vertex of the shortest path of arrival
-  const precedentsMap = {};
+  const precedentsMap: TNode = {};
 
   // store nodes already visited
-  const visited = {};
+  const visited: TNode = {};
 
   // store/update only the shortest edge weights measured
   // the purpose of this is object is constant time lookup vs. binary heap lookup O(n)
-  const storedShortestPaths = {};
+  const storedShortestPaths: TNode = {};
   storedShortestPaths[startNode] = 0;
 
   // priority queue of ALL nodes and storedShortestPaths
   // don't bother to delete them because it's faster to look at visited?
-  const pQueue = new BinaryHeap(function (n) {
+  const pQueue = new BinaryHeap(function (n: IBinaryHeapNode) {
     return n.weight;
   });
+
   pQueue.push({ id: startNode, weight: 0 });
 
   while (pQueue.size()) {
@@ -29,6 +42,7 @@ const buildPrecedentsMap = (graph, startNode, endNode) => {
 
     // visit neighboring nodes
     const neighboringNodes = graph(shortestNodeId) || {};
+    // debugger;
     visited[shortestNodeId] = 1;
 
     // meet the neighbors, looking for shorter paths
@@ -39,13 +53,14 @@ const buildPrecedentsMap = (graph, startNode, endNode) => {
       // if this is the first time meeting the neighbor OR if the new total weight from
       // start node to this neighbor node is greater than the old weight path, update it,
       // and update precedent node
+      const neighborId = Number(neighbor);
       if (
-        typeof storedShortestPaths[neighbor] === "undefined" ||
-        storedShortestPaths[neighbor] > newTotalWeight
+        typeof storedShortestPaths[neighborId] === "undefined" ||
+        storedShortestPaths[neighborId] > newTotalWeight
       ) {
-        storedShortestPaths[neighbor] = newTotalWeight;
-        pQueue.push({ id: neighbor, weight: newTotalWeight });
-        precedentsMap[neighbor] = shortestNodeId;
+        storedShortestPaths[neighborId] = newTotalWeight;
+        pQueue.push({ id: neighborId, weight: newTotalWeight });
+        precedentsMap[neighborId] = shortestNodeId;
       }
     }
   }
@@ -58,10 +73,10 @@ const buildPrecedentsMap = (graph, startNode, endNode) => {
 };
 
 // build the route from precedent node vertices
-const getPathFromPrecedentsMap = (precedentsMap, endNode) => {
+const getPathFromPrecedentsMap = (precedentsMap: TNode, endNode: number) => {
   const nodes = [];
   let n = endNode;
-  while (n) {
+  while (n !== undefined) {
     nodes.push(n);
     n = precedentsMap[n];
   }
@@ -69,7 +84,11 @@ const getPathFromPrecedentsMap = (precedentsMap, endNode) => {
 };
 
 // build the precedentsMap and find the shortest path from it
-export const findShortestPath = (graph, startNode, endNode) => {
+export const findShortestPath = (
+  graph: TGraphFunc,
+  startNode: number,
+  endNode: number
+) => {
   const precedentsMap = buildPrecedentsMap(graph, startNode, endNode);
   return getPathFromPrecedentsMap(precedentsMap, endNode);
 };
