@@ -1,12 +1,8 @@
 import { BinaryHeap } from "./binary-heap";
+import type { IBinaryHeapNode } from "./binary-heap";
 
-type TNode = { [key: number]: number };
-type TGraphFunc = (id: number) => TNode;
-
-interface IBinaryHeapNode {
-  id: number;
-  weight: number;
-}
+export type TNode = { [key: number]: number };
+export type TGraphFunc = (id: number) => TNode;
 
 const buildPrecedentsMap = (
   graph: TGraphFunc,
@@ -42,7 +38,6 @@ const buildPrecedentsMap = (
 
     // visit neighboring nodes
     const neighboringNodes = graph(shortestNodeId) || {};
-    // debugger;
     visited[shortestNodeId] = 1;
 
     // meet the neighbors, looking for shorter paths
