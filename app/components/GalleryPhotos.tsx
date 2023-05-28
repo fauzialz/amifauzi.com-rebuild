@@ -1,6 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
-// import Gallery from "react-photo-gallery";
-// import Carousel, { Modal, ModalGateway } from "react-images";
+import { useEffect, useState } from "react";
 import foto1 from "~/images/foto1.jpg";
 import foto2 from "~/images/foto2.jpg";
 import foto3 from "~/images/foto3.jpg";
@@ -74,19 +72,6 @@ let isHydrating = true;
 
 const GalleryPhotos = () => {
   let [isHydrated, setIsHydrated] = useState(!isHydrating);
-  const [currentImage, setCurrentImage] = useState(0);
-  const [viewerIsOpen, setViewerIsOpen] = useState(false);
-
-  const openLightbox = useCallback((index: number) => {
-    setCurrentImage(index);
-    setViewerIsOpen(true);
-    alert(photos[index].src);
-  }, []);
-
-  const closeLightbox = () => {
-    setCurrentImage(0);
-    setViewerIsOpen(false);
-  };
 
   useEffect(() => {
     isHydrating = false;
@@ -100,20 +85,7 @@ const GalleryPhotos = () => {
       </h4>
       {isHydrated ? (
         <div className="w-full overflow-auto">
-          <Gallery photos={photos} onClick={openLightbox} />
-          {/* <ModalGateway>
-            {viewerIsOpen ? (
-              <Modal onClose={closeLightbox}>
-                <Carousel
-                  styles={{}}
-                  currentIndex={currentImage}
-                  views={photos.map((x) => ({
-                    source: x.src,
-                  }))}
-                />
-              </Modal>
-            ) : null}
-          </ModalGateway> */}
+          <Gallery photos={photos} />
         </div>
       ) : null}
     </div>

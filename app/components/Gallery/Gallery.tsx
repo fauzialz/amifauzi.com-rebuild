@@ -6,6 +6,7 @@ https://github.com/neptunian/react-photo-gallery
 import { useLayoutEffect, useRef, useState } from "react";
 import { computeRowLayout } from "./Utils/compute-layout";
 import { findIdealNodeSearch } from "./Utils/findIdealNodeSearch";
+import { PhotoProvider, PhotoView } from "react-photo-view";
 
 export interface IPhoto {
   src: string;
@@ -16,10 +17,9 @@ export interface IPhoto {
 
 interface GalleryProps {
   photos: IPhoto[];
-  onClick: (index: number) => void;
 }
 
-const Gallery = ({ photos, onClick }: GalleryProps) => {
+const Gallery = ({ photos }: GalleryProps) => {
   const [containerWidth, setContainerWidth] = useState(0);
   const galleryEl = useRef<HTMLDivElement | null>(null);
 
@@ -66,21 +66,24 @@ const Gallery = ({ photos, onClick }: GalleryProps) => {
   });
 
   return (
-    <div ref={galleryEl} className="flex flex-wrap">
-      {thumbs.map((thumb, index) => {
-        return (
-          <img
-            key={index}
-            src={thumb.src}
-            alt={thumb.alt}
-            width={thumb.width}
-            height={thumb.height}
-            onClick={() => onClick(index)}
-            className="m-0.5 cursor-pointer"
-          />
-        );
-      })}
-    </div>
+    <PhotoProvider>
+      <div ref={galleryEl} className="flex flex-wrap">
+        {thumbs.map((thumb, index) => {
+          return (
+            <PhotoView key={index} src={thumb.src}>
+              <img
+                key={index}
+                src={thumb.src}
+                alt={thumb.alt}
+                width={thumb.width}
+                height={thumb.height}
+                className="m-0.5 cursor-pointer"
+              />
+            </PhotoView>
+          );
+        })}
+      </div>
+    </PhotoProvider>
   );
 };
 

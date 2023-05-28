@@ -9,10 +9,12 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 import styles from "./tailwind.css";
+import reactPhotoViewStyles from "react-photo-view/dist/react-photo-view.css";
 
 export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
   { rel: "stylesheet", href: styles },
+  { rel: "stylesheet", href: reactPhotoViewStyles },
   {
     rel: "preconnect",
     href: "https://fonts.googleapis.com",
